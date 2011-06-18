@@ -30,9 +30,9 @@ control_c()
 trap control_c SIGINT
 
 echo -e "\n\n"
-echo "#################################"
-echo "########## Rails Ready ##########"
-echo "#################################"
+echo "###################################"
+echo "########## Sinatra Ready ##########"
+echo "###################################"
 
 #determine the distro
 if [[ $distro_sig =~ ubuntu ]] ; then
