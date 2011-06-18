@@ -1,8 +1,7 @@
 #!/bin/bash
 #
-# Rails Ready
 #
-# Author: Josh Frye <joshfng@gmail.com>
+# Adapted from Rails Ready by Josh Frye <joshfng@gmail.com>
 # Licence: MIT
 #
 # Contributions from: Wayne E. Seguin <wayneeseguin@gmail.com>
@@ -17,8 +16,8 @@ ruby_source_url="ftp://ftp.ruby-lang.org//pub/ruby/1.9/ruby-1.9.2-p180.tar.gz"
 ruby_source_tar_name="ruby-1.9.2-p180.tar.gz"
 ruby_source_dir_name="ruby-1.9.2-p180"
 script_runner=$(whoami)
-railsready_path=$(cd && pwd)/railsready
-log_file="$railsready_path/install.log"
+sinatraready_path=$(cd && pwd)/sinatraready
+log_file="$sinatraready_path/install.log"
 distro_sig=$(cat /etc/issue)
 
 control_c()
@@ -38,10 +37,8 @@ echo "#################################"
 #determine the distro
 if [[ $distro_sig =~ ubuntu ]] ; then
   distro="ubuntu"
-elif [[ $distro_sig =~ centos ]] ; then
-  distro="centos"
 else
-  echo -e "\nRails Ready currently only supports Ubuntu and CentOS\n"
+  echo -e "\nSinatra Ready currently only supports Ubuntu\n"
   exit 1
 fi
 
@@ -59,13 +56,11 @@ echo -e "\n"
 echo "What this script gets you:"
 echo " * An updated system"
 echo " * Ruby $ruby_version_string"
-echo " * Imagemagick"
-echo " * libs needed to run Rails (sqlite, mysql, etc)"
-echo " * Bundler, Passenger, and Rails gems"
+echo " * Bundler, Passenger, and Sinatra gems"
 echo " * Git"
 
 echo -e "\nThis script is always changing."
-echo "Make sure you got it from https://github.com/joshfng/railsready"
+echo "Make sure you got it from https://github.com/digitalronin/sinatraready"
 
 # Check if the user has sudo privileges.
 sudo -v >/dev/null 2>&1 || { echo $script_runner has no sudo privileges ; exit 1; }
@@ -88,7 +83,7 @@ else
 fi
 
 echo -e "\n=> Creating install dir..."
-cd && mkdir -p railsready/src && cd railsready && touch install.log
+cd && mkdir -p sinatraready/src && cd sinatraready && touch install.log
 echo "==> done..."
 
 echo -e "\n=> Ensuring there is a .bashrc and .bash_profile..."
@@ -99,14 +94,14 @@ echo "==> done..."
 
 echo -e "\n=> Downloading and running recipe for $distro...\n"
 #Download the distro specific recipe and run it, passing along all the variables as args
-wget --no-check-certificate -O $railsready_path/src/$distro.sh https://github.com/joshfng/railsready/raw/master/recipes/$distro.sh && cd $railsready_path/src && bash $distro.sh $ruby_version $ruby_version_string $ruby_source_url $ruby_source_tar_name $ruby_source_dir_name $whichRuby $railsready_path $log_file
+wget --no-check-certificate -O $sinatraready_path/src/$distro.sh https://github.com/digitalronin/sinatraready/raw/master/recipes/$distro.sh && cd $sinatraready_path/src && bash $distro.sh $ruby_version $ruby_version_string $ruby_source_url $ruby_source_tar_name $ruby_source_dir_name $whichRuby $sinatraready_path $log_file
 echo -e "\n==> done running $distro specific commands..."
 
 #now that all the distro specific packages are installed lets get Ruby
 if [ $whichRuby -eq 1 ] ; then
   # Install Ruby
   echo -e "\n=> Downloading Ruby $ruby_version_string \n"
-  cd $railsready_path/src && wget $ruby_source_url
+  cd $sinatraready_path/src && wget $ruby_source_url
   echo -e "\n==> done..."
   echo -e "\n=> Extracting Ruby $ruby_version_string"
   tar -xzf $ruby_source_tar_name >> $log_file 2>&1
@@ -159,11 +154,11 @@ elif [ $whichRuby -eq 2 ] ; then
 fi
 echo "==> done..."
 
-echo -e "\n=> Installing Bundler, Passenger and Rails..."
+echo -e "\n=> Installing Bundler, Passenger and Sinatra..."
 if [ $whichRuby -eq 1 ] ; then
-  sudo gem install bundler passenger rails --no-ri --no-rdoc >> $log_file 2>&1
+  sudo gem install bundler passenger sinatra --no-ri --no-rdoc >> $log_file 2>&1
 elif [ $whichRuby -eq 2 ] ; then
-  gem install bundler passenger rails --no-ri --no-rdoc >> $log_file 2>&1
+  gem install bundler passenger sinatra --no-ri --no-rdoc >> $log_file 2>&1
 fi
 echo "==> done..."
 

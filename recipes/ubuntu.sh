@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Rails Ready
+# Sinatra Ready
 #
-# Author: Josh Frye <joshfng@gmail.com>
+# Adapted from Rails Ready by Josh Frye <joshfng@gmail.com>
 # Licence: MIT
 #
 # Contributions from: Wayne E. Seguin <wayneeseguin@gmail.com>
@@ -45,15 +45,6 @@ sudo $pm -y install \
     libxml2 libffi-dev libyaml-dev \
     libxslt-dev autoconf libc6-dev \
     libreadline6-dev zlib1g-dev libcurl4-openssl-dev >> $log_file 2>&1
-echo "==> done..."
-
-echo -e "\n=> Installing libs needed for sqlite and mysql..."
-sudo $pm -y install libsqlite3-0 sqlite3 libsqlite3-dev libmysqlclient16-dev libmysqlclient16 >> $log_file 2>&1
-echo "==> done..."
-
-# Install imagemagick
-echo -e "\n=> Installing imagemagick (this may take a while)..."
-sudo $pm -y install imagemagick libmagick9-dev >> $log_file 2>&1
 echo "==> done..."
 
 # Install git-core
